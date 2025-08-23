@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Management System</title>
+    <style>
+/* Import Inter font - Alternative: Download and serve locally if CSP blocks external fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: #8b5cf6;
+    --secondary: #f59e0b;
+    --accent: #ec4899;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --dark: #0f172a;
+    --dark-light: #1e293b;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --gray-900: #0f172a;
+    --white: #ffffff;
+    --glass: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    --gradient-secondary: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+    --gradient-dark: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--gray-800);
+    background: var(--gradient-dark);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
+    z-index: -2;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    z-index: -1;
+}
+
+/* Layout */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+}
+
+/* Header */
+.header {
+    background: var(--gradient-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    color: var(--white);
+    text-align: center;
+    padding: 4rem 2rem;
+    margin-bottom: 3rem;
+    border-radius: 24px;
+    box-shadow: var(--shadow-2xl);
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-primary);
+    opacity: 0.9;
+    z-index: -1;
+}
+
+.header h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--white) 0%, rgba(255,255,255,0.8) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.header p {
+    font-size: 1.25rem;
+    font-weight: 500;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Navigation Tabs */
+.nav-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 0.75rem;
+    margin-bottom: 3rem;
+    box-shadow: var(--shadow-xl);
+}
+
+.nav-tab {
+    flex: 1;
+    min-width: 120px;
+    padding: 1rem 1.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-tab::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.nav-tab.active {
+    color: var(--white);
+    font-weight: 600;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.nav-tab.active::before {
+    opacity: 1;
+}
+
+.nav-tab:hover:not(.active) {
+    color: var(--white);
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-1px);
+}
+
+.nav-tab:active {
+    transform: translateY(0);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Cards */
+.card {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow-xl);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    color: var(--white);
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--gradient-primary);
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-2xl);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.card h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 1rem;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    font-size: 1rem;
+    color: var(--white);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: inherit;
+}
+
+/* Fix dropdown options visibility */
+select option {
+    background: var(--gray-800);
+    color: var(--white);
+    padding: 0.5rem;
+}
+
+select option:hover,
+select option:checked {
+    background: var(--primary);
+    color: var(--white);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: rgba(255,255,255,0.5);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(255,255,255,0.15);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Buttons */
+.btn {
+    background: var(--gradient-primary);
+    color: var(--white);
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-right: 1rem;
+    margin-bottom: 0.75rem;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-lg);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-2xl);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:active {
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: var(--gradient-secondary);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--error) 0%, #dc2626 100%);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+}
+
+/* Data Display */
+.data-display {
+    display: flex;
+    overflow-x: auto;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) transparent;
+}
+
+.data-display::-webkit-scrollbar {
+    height: 6px;
+}
+
+.data-display::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+}
+
+.data-display::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary);
+    border-radius: 3px;
+}
+
+.data-item {
+    flex: 0 0 auto;
+    min-width: 280px;
+    max-width: 350px;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+}
+
+.data-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--gradient-primary);
+}
+
+.data-item:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: var(--shadow-2xl);
+    border-color: rgba(99, 102, 241, 0.4);
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid transparent;
+}
+
+.status-vacant,
+.status-all-vacant {
+    background: linear-gradient(135deg, var(--success), #059669);
+    color: var(--white);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.status-partial,
+.status-partially-occupied {
+    background: linear-gradient(135deg, var(--warning), #d97706);
+    color: var(--white);
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.status-full,
+.status-all-full {
+    background: linear-gradient(135deg, var(--error), #dc2626);
+    color: var(--white);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.status-no-rooms {
+    background: linear-gradient(135deg, var(--gray-500), var(--gray-600));
+    color: var(--white);
+    border-color: rgba(100, 116, 139, 0.3);
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+/* Messages */
+.message {
+    padding: 1.25rem 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+    box-shadow: var(--shadow-md);
+    border: 1px solid transparent;
+}
+
+.message.success {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+    color: var(--success);
+    border-color: rgba(16, 185, 129, 0.2);
+}
+
+.message.error {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+    color: var(--error);
+    border-color: rgba(239, 68, 68, 0.2);
+}
+
+.message.warning {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1));
+    color: var(--warning);
+    border-color: rgba(245, 158, 11, 0.2);
+}
+
+/* Loading Animation */
+.loading {
+    text-align: center;
+    padding: 3rem;
+    color: var(--white);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.spinner {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(255,255,255,0.2);
+    border-top: 3px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .header {
+        padding: 3rem 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .nav-tabs {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .nav-tab {
+        min-width: auto;
+    }
+
+    .card {
+        padding: 1.5rem;
+    }
+
+    .data-display {
+        gap: 1rem;
+    }
+
+    .data-item {
+        min-width: 250px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .data-item {
+        min-width: 220px;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+    <div class="header" style="position: relative;">
+        <h1>🏠 Hostel Management System</h1>
+        <p>Manage your hostels, rooms, and tenants efficiently</p>
+        <div style="position:absolute; top:16px; right:16px; display:flex; gap:8px; align-items:center;">
+            <span id="helloUser" style="font-weight:600;"></span>
+            <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showTab('hostels')">Hostels</button>
+        <button class="nav-tab" onclick="showTab('rooms')">Rooms</button>
+        <button class="nav-tab" onclick="showTab('tenants')">Tenants</button>
+    </div>
+
+    <!-- Hostels Tab -->
+    <div id="hostels" class="tab-content active">
+        <div class="grid">
+            <div class="card">
+                <h3>Add New Hostel</h3>
+                <form id="hostelForm">
+                    <div class="form-group">
+                        <label for="hostelName">Hostel Name</label>
+                        <input type="text" id="hostelName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hostelOwner">Owner Name</label>
+                        <input type="text" id="hostelOwner" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hostelFloors">Number of Floors</label>
+                        <input type="number" id="hostelFloors" min="1" required>
+                    </div>
+                    <button type="submit" class="btn">Add Hostel</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>All Hostels</h3>
+                <button class="btn btn-secondary" onclick="loadHostels()">Refresh List</button>
+                <div id="hostelsList" class="data-display">
+                    <div class="loading">Click "Refresh List" to load hostels</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rooms Tab -->
+    <div id="rooms" class="tab-content">
+        <div class="grid">
+            <div class="card">
+                <h3>Add New Room</h3>
+                <form id="roomForm">
+                    <div class="form-group">
+                        <label for="roomHostelId">Hostel ID</label>
+                        <input type="number" id="roomHostelId" required>
+                        <small>Enter the ID of the hostel (check Hostels tab)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="roomType">Room Type</label>
+                        <select id="roomType" required>
+                            <option value="">Select Room Type</option>
+                            <option value="SINGLE">Single Room (1 person)</option>
+                            <option value="DOUBLE_SHARED">Double Shared (2 persons)</option>
+                            <option value="TRIPLE_SHARED">Triple Shared (3 persons)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Add Room</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Room Operations</h3>
+                <div class="form-group">
+                    <label for="checkRoomId">Room ID</label>
+                    <input type="number" id="checkRoomId" placeholder="Enter Room ID">
+                </div>
+                <button class="btn btn-secondary" onclick="checkRoomStatus()">Check Room Status</button>
+                <button class="btn btn-secondary" onclick="loadAllRooms()">Show All Rooms</button>
+
+                <div id="roomStatus" class="data-display" style="display: none;">
+                    <!-- Room status will appear here -->
+                </div>
+
+                <div id="allRooms" class="data-display" style="display: none;">
+                    <!-- All rooms will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tenants Tab -->
+    <div id="tenants" class="tab-content">
+        <div class="grid">
+            <div class="card">
+                <h3>Add New Tenant</h3>
+                <form id="tenantForm">
+                    <div class="form-group">
+                        <label for="tenantName">Tenant Name</label>
+                        <input type="text" id="tenantName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tenantAge">Age</label>
+                        <input type="number" id="tenantAge" min="18" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tenantGender">Gender</label>
+                        <select id="tenantGender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tenantRoomId">Room ID</label>
+                        <input type="number" id="tenantRoomId" required>
+                        <small>Enter the ID of the room to assign</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="tenantRentPaid">Rent Paid</label>
+                        <select id="tenantRentPaid" required>
+                            <option value="">Select</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+
+
+                    <button type="submit" class="btn">Add Tenant</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Tenant Operations</h3>
+                <div class="form-group">
+                    <label for="searchTenantId">Tenant ID</label>
+                    <input type="number" id="searchTenantId" placeholder="Enter Tenant ID">
+                </div>
+                <button class="btn btn-secondary" onclick="findTenant()">Search Tenant</button>
+                <button class="btn btn-secondary" onclick="loadAllTenants()">Show All Tenants</button>
+                <button class="btn btn-danger" onclick="deleteTenant()">Delete Tenant</button>
+
+                <div id="tenantDetails" class="data-display" style="display: none;">
+                    <!-- Tenant details will appear here -->
+                </div>
+                <div id="allTenants" class="data-display" style="display: none;">
+                    <!-- All tenants will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="messageArea" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+
+<script>
+  // Always hit your Spring Boot backend directly
+  const BASE_URL = '/api';
+
+
+// --- Simple login guard ---
+(function enforceLogin() {
+  const user = localStorage.getItem('authUser');
+  if (!user) {
+    window.location.href = 'login.html';
+  } else {
+    // optional: show username in header if you want
+    window.__authUser = user;
+  }
+})();
+
+
+function logout() {
+  localStorage.removeItem('authUser');
+  window.location.href = 'login.html';
+}
+
+// Fill the helloUser span after DOM loads
+document.addEventListener('DOMContentLoaded', function () {
+  const u = window.__authUser || localStorage.getItem('authUser');
+  const hello = document.getElementById('helloUser');
+  if (hello && u) hello.textContent = `Hi, ${u}`;
+});
+
+  function showTab(tabName, event) {
+    const tabs = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => tab.classList.remove('active'));
+    const navTabs = document.querySelectorAll('.nav-tab');
+    navTabs.forEach(navTab => navTab.classList.remove('active'));
+    document.getElementById(tabName).classList.add('active');
+    if (event) event.target.classList.add('active');
+  }
+
+  function showMessage(message, type = 'success') {
+    const messageArea = document.getElementById('messageArea');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${type}`;
+    messageDiv.textContent = message;
+    messageArea.appendChild(messageDiv);
+    setTimeout(() => messageArea.removeChild(messageDiv), 5000);
+  }
+
+  async function loadHostels() {
+    const hostelsList = document.getElementById('hostelsList');
+    hostelsList.innerHTML = '<div class="loading"><div class="spinner"></div>Loading hostels...</div>';
+    try {
+      const response = await fetch(`${BASE_URL}/hostel/all`);
+      if (!response.ok) throw new Error('Failed to load hostels');
+      const hostels = await response.json();
+      if (!Array.isArray(hostels) || hostels.length === 0) {
+        hostelsList.innerHTML = '<p>No hostels found. Add some hostels first!</p>';
+        return;
+      }
+      hostelsList.innerHTML = hostels.map(hostel => `
+        <div class="data-item">
+          <h4>🏠 ${hostel.name}</h4>
+          <p><strong>ID:</strong> ${hostel.hid}</p>
+          <p><strong>Owner:</strong> ${hostel.owner}</p>
+          <p><strong>Floors:</strong> ${hostel.floors}</p>
+          <p><strong>Total Rooms:</strong> ${hostel.totalRooms || 0}</p>
+          <p><strong>Status:</strong>
+            <span class="status-badge status-${(hostel.status || 'no-rooms').toLowerCase().replace(/\s+/g,'-')}">
+              ${hostel.status || 'No Rooms'}
+            </span>
+          </p>
+        </div>
+      `).join('');
+    } catch (error) {
+      console.error('Error:', error);
+      hostelsList.innerHTML = '<p class="error">Error loading hostels.</p>';
+      showMessage('Error loading hostels. Please check your server connection.', 'error');
+    }
+  }
+
+  async function loadAllRooms() {
+    const roomsDiv = document.getElementById('allRooms');
+    roomsDiv.style.display = 'flex';
+    roomsDiv.innerHTML = '<div class="loading"><div class="spinner"></div>Loading all rooms...</div>';
+    try {
+      const response = await fetch(`${BASE_URL}/rooms/all`);
+      if (!response.ok) throw new Error('Failed to load rooms');
+      const rooms = await response.json();
+      if (!Array.isArray(rooms) || rooms.length === 0) {
+        roomsDiv.innerHTML = '<p>No rooms found. Add some rooms first!</p>';
+        return;
+      }
+      roomsDiv.innerHTML = rooms.map(room => {
+        const statusClass = room.currentOccupancy === 0 ? 'status-vacant'
+                          : (room.currentOccupancy < room.capacity ? 'status-partial' : 'status-full');
+        const status = room.currentOccupancy === 0 ? 'Vacant'
+                    : (room.currentOccupancy < room.capacity ? 'Partially Occupied' : 'Fully Occupied');
+        return `
+          <div class="data-item">
+            <h4>🏷️ Room ID: ${room.id}</h4>
+            <p><strong>Hostel ID:</strong> ${room.hostel ? room.hostel.hid : 'N/A'}</p>
+            <p><strong>Type:</strong> ${room.roomType ? room.roomType.replace(/_/g, ' ') : 'N/A'}</p>
+            <p><strong>Capacity:</strong> ${room.capacity || 'N/A'}</p>
+            <p><strong>Current Occupancy:</strong> ${room.currentOccupancy || 0}</p>
+            <p><strong>Status:</strong> <span class="status-badge ${statusClass}">${status}</span></p>
+          </div>
+        `;
+      }).join('');
+    } catch (error) {
+      console.error('Error:', error);
+      roomsDiv.innerHTML = '<p class="error">Error loading rooms.</p>';
+      showMessage('Please make sure the /rooms/all endpoint is working.', 'error');
+    }
+  }
+
+  async function checkRoomStatus() {
+    const roomId = document.getElementById('checkRoomId').value;
+    if (!roomId) return showMessage('Please enter a Room ID', 'error');
+    const roomStatusDiv = document.getElementById('roomStatus');
+    roomStatusDiv.style.display = 'block';
+    roomStatusDiv.innerHTML = '<div class="loading"><div class="spinner"></div>Loading room status...</div>';
+    try {
+      const response = await fetch(`${BASE_URL}/rooms/getroomstatus/${roomId}`);
+      if (response.ok) {
+        const status = await response.text();
+        roomStatusDiv.innerHTML = `
+          <p><strong>Room ID:</strong> ${roomId}</p>
+          <p><strong>Status:</strong>
+            <span class="status-badge status-${status.toLowerCase().replace('_', '-')}">${status}</span>
+          </p>
+        `;
+      } else {
+        throw new Error('Failed to fetch room status');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      roomStatusDiv.innerHTML = '<p class="error">Error fetching room status.</p>';
+      showMessage('Error fetching room status. Please check the Room ID.', 'error');
+    }
+  }
+
+  async function findTenant() {
+    const tenantId = document.getElementById('searchTenantId').value;
+    if (!tenantId) return showMessage('Please enter a Tenant ID', 'error');
+    const tenantDetailsDiv = document.getElementById('tenantDetails');
+    tenantDetailsDiv.style.display = 'block';
+    tenantDetailsDiv.innerHTML = '<div class="loading"><div class="spinner"></div>Loading tenant details...</div>';
+    try {
+      const response = await fetch(`${BASE_URL}/tenants/tenantbyid/${tenantId}`);
+      if (response.ok) {
+        const tenant = await response.json();
+        tenantDetailsDiv.innerHTML = `
+          <div class="data-item">
+            <h4>👤 Tenant ID: ${tenant.id}</h4>
+            <p><strong>Name:</strong> ${tenant.name}</p>
+            <p><strong>Age:</strong> ${tenant.age}</p>
+            <p><strong>Gender:</strong> ${tenant.gender}</p>
+            <p><strong>Room ID:</strong> ${tenant.room ? tenant.room.id : 'N/A'}</p>
+            <p><strong>Rent Paid:</strong> ${tenant.rentPaid ? '✅ Yes' : '❌ No'}</p>
+          </div>
+        `;
+      } else {
+        throw new Error('Failed to fetch tenant');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      tenantDetailsDiv.innerHTML = '<p class="error">Error fetching tenant details.</p>';
+      showMessage('Error fetching tenant. Please check the Tenant ID.', 'error');
+    }
+  }
+
+  async function loadAllTenants() {
+    const tenantsDiv = document.getElementById('allTenants');
+    tenantsDiv.style.display = 'flex';
+    tenantsDiv.innerHTML = '<div class="loading"><div class="spinner"></div>Loading all tenants...</div>';
+    try {
+      const response = await fetch(`${BASE_URL}/tenants/all`);
+      if (!response.ok) throw new Error('Failed to load tenants');
+      const tenants = await response.json();
+      if (!Array.isArray(tenants) || tenants.length === 0) {
+        tenantsDiv.innerHTML = '<p>No tenants found. Add some tenants first!</p>';
+        return;
+      }
+      const tenantsByHostel = tenants.reduce((acc, tenant) => {
+        const hostelId = tenant.room?.hostel?.hid || 'no-hostel';
+        const hostelName = tenant.room?.hostel?.name || 'Unassigned';
+        if (!acc[hostelId]) acc[hostelId] = { name: hostelName, tenants: [] };
+        acc[hostelId].tenants.push(tenant);
+        return acc;
+      }, {});
+      tenantsDiv.innerHTML = Object.values(tenantsByHostel).map(hostel => `
+        <div class="data-item">
+          <h4>🏠 ${hostel.name} (ID: ${hostel.tenants[0].room?.hostel?.hid || 'N/A'})</h4>
+          ${hostel.tenants.map(t => `
+            <div style="margin-top:8px; padding-top:6px; border-top:1px dashed #eee;">
+              <p><strong>Tenant ID:</strong> ${t.id}</p>
+              <p><strong>Name:</strong> ${t.name}</p>
+              <p><strong>Age:</strong> ${t.age}</p>
+              <p><strong>Gender:</strong> ${t.gender}</p>
+              <p><strong>Room ID:</strong> ${t.room?.id || 'N/A'}</p>
+              <p><strong>Rent Paid:</strong> ${t.rentPaid ? '✅ Yes' : '❌ No'}</p>
+            </div>
+          `).join('')}
+        </div>
+      `).join('');
+    } catch (error) {
+      console.error('Error:', error);
+      tenantsDiv.innerHTML = '<p class="error">Error loading tenants.</p>';
+      showMessage('Please make sure the /tenants/all endpoint is working.', 'error');
+    }
+  }
+
+  async function deleteTenant() {
+    const tenantId = document.getElementById('searchTenantId').value;
+    if (!tenantId) return showMessage('Please enter a Tenant ID', 'error');
+    const tenantDetailsDiv = document.getElementById('tenantDetails');
+    tenantDetailsDiv.style.display = 'block';
+    tenantDetailsDiv.innerHTML = '<div class="loading"><div class="spinner"></div>Deleting tenant...</div>';
+    try {
+      const response = await fetch(`${BASE_URL}/tenants/${tenantId}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (response.ok) {
+        const result = await response.json();
+        tenantDetailsDiv.innerHTML = '<p class="success">Tenant deleted successfully.</p>';
+        showMessage(result.message, 'success');
+        document.getElementById('searchTenantId').value = '';
+        loadAllTenants();
+      } else {
+        throw new Error('Failed to delete tenant');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      tenantDetailsDiv.innerHTML = '<p class="error">Error deleting tenant.</p>';
+      showMessage('Error deleting tenant. Please check the Tenant ID.', 'error');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    showMessage('Welcome to Hostel Management System! Make sure your Spring Boot server is running on localhost:8080', 'success');
+
+    document.getElementById('hostelForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const hostelData = {
+        name: document.getElementById('hostelName').value,
+        owner: document.getElementById('hostelOwner').value,
+        floors: parseInt(document.getElementById('hostelFloors').value)
+      };
+      try {
+        const response = await fetch(`${BASE_URL}/hostel/add`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(hostelData)
+        });
+        if (response.ok) {
+          const result = await response.json();
+          showMessage(`Hostel "${result.name}" added successfully with ID: ${result.hid}`);
+          document.getElementById('hostelForm').reset();
+          loadHostels();
+        } else {
+          throw new Error('Failed to add hostel');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showMessage('Error adding hostel. Please try again.', 'error');
+      }
+    });
+
+    document.getElementById('roomForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const roomData = {
+        hostel: { hid: parseInt(document.getElementById('roomHostelId').value) },
+        roomType: document.getElementById('roomType').value
+      };
+      try {
+        const response = await fetch(`${BASE_URL}/rooms/addroom`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(roomData)
+        });
+        if (response.ok) {
+          const result = await response.json();
+          showMessage(`Room added successfully with ID: ${result.id}`);
+          document.getElementById('roomForm').reset();
+          loadAllRooms();
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to add room');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showMessage(`Error adding room: ${error.message}`, 'error');
+      }
+    });
+
+    document.getElementById('tenantForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const rentField = document.getElementById('tenantRentPaid');
+      const tenantData = {
+        name: document.getElementById('tenantName').value,
+        age: parseInt(document.getElementById('tenantAge').value),
+        gender: document.getElementById('tenantGender').value,
+        room: { id: parseInt(document.getElementById('tenantRoomId').value) },
+        rentPaid: rentField ? rentField.value === 'true' : false
+      };
+      try {
+        const response = await fetch(`${BASE_URL}/tenants/addtenant`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(tenantData)
+        });
+        if (response.ok) {
+          const result = await response.json();
+          showMessage(`Tenant "${result.name}" added successfully with ID: ${result.id}`);
+          document.getElementById('tenantForm').reset();
+          loadAllRooms();
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to add tenant');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showMessage(`Error adding tenant: ${error.message}`, 'error');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -37,6 +37,9 @@ The application follows a layered architecture pattern:
 ├── Repository Layer   (Data access)
 └── Entity Layer       (Database models)
 ```
+## Architecture Diagram 
+<img width="1927" height="3840" alt="Image" src="https://github.com/user-attachments/assets/b15488e3-6c2d-4bed-b178-15c283a5c028" />
+
 
 ## Database Schema
 

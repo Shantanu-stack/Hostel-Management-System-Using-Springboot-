@@ -9,7 +9,9 @@ Created a Springboot  Application
 ## Adding New Tenant
 <img width="1220" height="842" alt="Image" src="https://github.com/user-attachments/assets/63e7b558-118b-4e7b-bf0e-a4bb0e5067a6" />
 
+## Add Hostel 
 <img width="1218" height="858" alt="Image" src="https://github.com/user-attachments/assets/da1da790-3446-416a-b056-ad1798cb9569" />
+##
 
 <img width="1320" height="860" alt="Image" src="https://github.com/user-attachments/assets/f78ceb5b-9890-473e-b57f-70519e04ffa8" />
 
